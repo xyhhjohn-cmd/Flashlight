@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>JX FlashPay</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#f5f6f8;
+    color:#171717;
+}
+
+.app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    margin:auto;
+    background:#fff;
+}
+
+.header{
+    height:64px;
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    border-bottom:1px solid #e6e6e6;
+    font-size:20px;
+    font-weight:700;
+}
+
+.header-icon{
+    font-size:22px;
+    margin-right:10px;
+}
+
+.content{
+    padding:25px 20px 90px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #e2e3e6;
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 4px 18px rgba(0,0,0,.05);
+}
+
+.flash-icon{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:#f1f2f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:29px;
+    margin-bottom:18px;
+}
+
+h1{
+    font-size:25px;
+    line-height:1.2;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#73777d;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.status{
+    margin-top:24px;
+    padding:15px;
+    border-radius:10px;
+    background:#f7f8f9;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+}
+
+.status strong{
+    color:#16803c;
+}
+
+.main-btn{
+    width:100%;
+    border:0;
+    border-radius:11px;
+    padding:16px;
+    margin-top:20px;
+    background:#171717;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.main-btn:active,
+.pay-btn:active{
+    transform:scale(.98);
+}
+
+.hidden{
+    display:none !important;
+}
+
+
+/* PAYMENT */
+
+.payment-title{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+.fee{
+    margin-top:20px;
+    font-size:38px;
+    font-weight:700;
+}
+
+.fee-label{
+    margin-top:4px;
+    color:#777;
+    font-size:13px;
+}
+
+.payment-note{
+    margin-top:18px;
+    padding:12px;
+    background:#f7f8f9;
+    border-radius:9px;
+    font-size:13px;
+    color:#62666b;
+    line-height:1.45;
+}
+
+.methods{
+    margin-top:24px;
+}
+
+.method-label{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:11px;
+}
+
+.method{
+    width:100%;
+    border:1px solid #dedfe2;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    background:#fff;
+}
+
+.method.selected{
+    border:2px solid #171717;
+    background:#fafafa;
+    padding:14px;
+}
+
+.method-icon{
+    width:42px;
+    height:42px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:13px;
+    font-size:18px;
+    font-weight:700;
+}
+
+.gcash{
+    background:#e8f4ff;
+    color:#0878d1;
+}
+
+.paypal{
+    background:#eaf0ff;
+    color:#1260aa;
+}
+
+.maya{
+    background:#e9f8ef;
+    color:#16804c;
+}
+
+.method-name{
+    font-size:15px;
+    font-weight:700;
+}
+
+.method-sub{
+    margin-top:3px;
+    font-size:12px;
+    color:#777;
+}
+
+.radio{
+    width:19px;
+    height:19px;
+    border:1px solid #aaa;
+    border-radius:50%;
+    margin-left:auto;
+}
+
+.selected .radio{
+    border:6px solid #171717;
+}
+
+.pay-btn{
+    width:100%;
+    border:0;
+    border-radius:11px;
+    padding:16px;
+    margin-top:10px;
+    background:#171717;
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.cancel{
+    text-align:center;
+    margin-top:17px;
+    color:#555;
+    font-size:14px;
+    cursor:pointer;
+    padding:8px;
+}
+
+.demo{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    max-width:480px;
+    margin:auto;
+    background:#fff;
+    border-top:1px solid #e8e8e8;
+    padding:10px;
+    text-align:center;
+    color:#999;
+    font-size:10px;
+}
+
+
+/* SUCCESS */
+
+.success{
+    text-align:center;
+    padding:20px 4px;
+}
+
+.success-icon{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#eaf7ee;
+    color:#16803c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 20px;
+    font-size:35px;
+}
+
+.receipt{
+    margin-top:24px;
+    background:#f7f8f9;
+    border-radius:12px;
+    padding:15px;
+    text-align:left;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:9px 0;
+    font-size:14px;
+}
+
+.row:last-child{
+    border-top:1px solid #ddd;
+    margin-top:6px;
+    padding-top:14px;
+    font-weight:700;
+}
+
+.done{
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-icon">🔦</div>
+        <div>JX FlashPay</div>
+    </div>
+
+
+    <!-- HOME -->
+    <section id="home" class="content">
+
+        <div class="card">
+
+            <div class="flash-icon">
+                🔦
+            </div>
+
+            <h1>Flashlight</h1>
+
+            <p class="subtitle">
+                Turn your device flashlight on or off.
+            </p>
+
+
+            <div class="status">
+                <span>Status</span>
+                <strong id="statusText">
+                    OFF
+                </strong>
+            </div>
+
+
+            <button
+                id="flashBtn"
+                class="main-btn"
+                onclick="toggleFlashlight()">
+
+                TURN ON FLASHLIGHT
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- PAYMENT SCREEN -->
+    <section id="payment" class="content hidden">
+
+        <div class="card">
+
+            <div class="payment-title">
+                Payment Required
+            </div>
+
+            <p class="subtitle">
+                Please select a payment method to continue.
+            </p>
+
+
+            <div class="fee">
+                ₱500.00
+            </div>
+
+            <div class="fee-label">
+                Flashlight service fee
+            </div>
+
+
+            <div class="payment-note">
+                Your flashlight is currently ON.
+                This payment screen is a simulation.
+            </div>
+
+
+            <div class="methods">
+
+                <div class="method-label">
+                    Payment method
+                </div>
+
+
+                <!-- GCASH -->
+                <div
+                    class="method"
+                    onclick="selectMethod(this,'GCash')">
+
+                    <div class="method-icon gcash">
+                        G
+                    </div>
+
+                    <div>
+                        <div class="method-name">
+                            GCash
+                        </div>
+
+                        <div class="method-sub">
+                            Pay using GCash
+                        </div>
+                    </div>
+
+                    <div class="radio"></div>
+
+                </div>
+
+
+                <!-- PAYPAL -->
+                <div
+                    class="method"
+                    onclick="selectMethod(this,'PayPal')">
+
+                    <div class="method-icon paypal">
+                        P
+                    </div>
+
+                    <div>
+                        <div class="method-name">
+                            PayPal
+                        </div>
+
+                        <div class="method-sub">
+                            Pay using PayPal
+                        </div>
+                    </div>
+
+                    <div class="radio"></div>
+
+                </div>
+
+
+                <!-- MAYA -->
+                <div
+                    class="method"
+                    onclick="selectMethod(this,'Maya')">
+
+                    <div class="method-icon maya">
+                        M
+                    </div>
+
+                    <div>
+                        <div class="method-name">
+                            Maya
+                        </div>
+
+                        <div class="method-sub">
+                            Pay using Maya
+                        </div>
+                    </div>
+
+                    <div class="radio"></div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="pay-btn"
+                onclick="simulatePayment()">
+
+                CONTINUE
+
+            </button>
+
+
+            <div
+                class="cancel"
+                onclick="cancelPayment()">
+
+                Cancel
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SUCCESS -->
+    <section id="successPage" class="content hidden">
+
+        <div class="card success">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h1>
+                Payment Successful
+            </h1>
+
+            <p class="subtitle">
+                Simulated payment completed successfully.
+            </p>
+
+
+            <div class="receipt">
+
+                <div class="row">
+                    <span>Amount</span>
+                    <span>₱500.00</span>
+                </div>
+
+                <div class="row">
+                    <span>Payment method</span>
+                    <span id="chosenMethod">
+                        GCash
+                    </span>
+                </div>
+
+                <div class="row">
+                    <span>Status</span>
+                    <span>Completed</span>
+                </div>
+
+            </div>
+
+
+            <button
+                class="main-btn done"
+                onclick="finishPayment()">
+
+                DONE
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- DEMO LABEL -->
+    <div class="demo">
+        DEMO / SIMULATION — No real payment is processed.
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   VARIABLES
+========================= */
+
+let flashlightTrack = null;
+let flashlightOn = false;
+let selectedMethod = "";
+
+
+/* =========================
+   FLASHLIGHT
+========================= */
+
+async function turnOnFlashlight(){
+
+    try{
+
+        const stream =
+            await navigator.mediaDevices.getUserMedia({
+                video:{
+                    facingMode:{
+                        ideal:"environment"
+                    }
+                }
+            });
+
+        const track =
+            stream.getVideoTracks()[0];
+
+        const capabilities =
+            track.getCapabilities();
+
+        if(!capabilities.torch){
+
+            track.stop();
+
+            alert(
+                "Flashlight control is not supported by this browser."
+            );
+
+            return;
+
+        }
+
+        await track.applyConstraints({
+            advanced:[
+                {
+                    torch:true
+                }
+            ]
+        });
+
+        flashlightTrack = track;
+        flashlightOn = true;
+
+        updateHomeUI();
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        alert(
+            "Please allow camera permission so the flashlight can be controlled."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   FLASHLIGHT BUTTON
+========================= */
+
+function toggleFlashlight(){
+
+    if(!flashlightOn){
+
+        turnOnFlashlight();
+
+    }else{
+
+        /*
+          Instead of immediately turning the flashlight off,
+          open the simulated payment screen.
+        */
+
+        openPayment();
+
+    }
+
+}
+
+
+/* =========================
+   UPDATE HOME
+========================= */
+
+function updateHomeUI(){
+
+    const status =
+        document.getElementById("statusText");
+
+    const button =
+        document.getElementById("flashBtn");
+
+
+    if(flashlightOn){
+
+        status.textContent = "ON";
+        status.style.color = "#d97706";
+
+        button.textContent =
+            "TURN OFF FLASHLIGHT";
+
+    }else{
+
+        status.textContent = "OFF";
+        status.style.color = "#16803c";
+
+        button.textContent =
+            "TURN ON FLASHLIGHT";
+
+    }
+
+}
+
+
+/* =========================
+   PAYMENT SCREEN
+========================= */
+
+function openPayment(){
+
+    document
+        .getElementById("home")
+        .classList.add("hidden");
+
+    document
+        .getElementById("payment")
+        .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   SELECT METHOD
+========================= */
+
+function selectMethod(element,method){
+
+    document
+        .querySelectorAll(".method")
+        .forEach(item=>{
+            item.classList.remove("selected");
+        });
+
+
+    element.classList.add("selected");
+
+    selectedMethod = method;
+
+}
+
+
+/* =========================
+   SIMULATED PAYMENT
+========================= */
+
+function simulatePayment(){
+
+    if(!selectedMethod){
+
+        alert(
+            "Please select a payment method."
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("payment")
+        .classList.add("hidden");
+
+    document
+        .getElementById("successPage")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("chosenMethod")
+        .textContent = selectedMethod;
+
+}
+
+
+/* =========================
+   CANCEL
+========================= */
+
+function cancelPayment(){
+
+    /*
+      Cancel only closes the payment screen.
+      It does not pretend to complete a payment.
+    */
+
+    document
+        .getElementById("payment")
+        .classList.add("hidden");
+
+    document
+        .getElementById("home")
+        .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   FINISH PAYMENT
+========================= */
+
+function finishPayment(){
+
+    stopFlashlight();
+
+    flashlightOn = false;
+
+    selectedMethod = "";
+
+
+    document
+        .getElementById("successPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("home")
+        .classList.remove("hidden");
+
+
+    document
+        .querySelectorAll(".method")
+        .forEach(item=>{
+            item.classList.remove("selected");
+        });
+
+
+    updateHomeUI();
+
+}
+
+
+/* =========================
+   STOP FLASHLIGHT
+========================= */
+
+function stopFlashlight(){
+
+    if(flashlightTrack){
+
+        try{
+
+            flashlightTrack
+                .applyConstraints({
+                    advanced:[
+                        {
+                            torch:false
+                        }
+                    ]
+                })
+                .catch(()=>{});
+
+        }catch(e){}
+
+
+        try{
+            flashlightTrack.stop();
+        }catch(e){}
+
+
+        flashlightTrack = null;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
